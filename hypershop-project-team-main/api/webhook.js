@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
 
   try {
     // Maneja cualquier pregunta general con GPT
-    if (intentName === 'duda_general_auto') {
+    if (intentName === 'duda_general_auto' || intentName === 'Default Fallback Intent') {
       const completion = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: [
