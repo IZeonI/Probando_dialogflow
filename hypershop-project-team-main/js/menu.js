@@ -19,13 +19,13 @@ document.getElementById("btn-menu").addEventListener("click", () => {
 });
 
 document.getElementById("user").addEventListener("click", () => {
-  window.location.href = "/hypershop-project-team-main/pages/login.html";
+  window.location.href = "/pages/login.html";
 });
 
 document.getElementById("logo").addEventListener("click", () => {
-  window.location.href = "/hypershop-project-team-main/index.html";
+  window.location.href = "/index.html";
 });
 
 document.getElementById("shopping-cart").addEventListener("click", () => {
-  window.location.href = "/hypershop-project-team-main/pages/carrito.html";
+  window.location.href = "/pages/carrito.html";
 });
