@@ -1,3 +1,13 @@
+require('dotenv').config();
+
+const { OpenAIApi, Configuration } = require("openai");
+
+const openai = new OpenAIApi(
+  new Configuration({
+    apiKey:process.env.OPENAI_API_KEY,
+  })
+);
+
 const axios = require('axios');
 
 module.exports = async (req, res) => {
@@ -5,12 +15,34 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const queryText = req.body.queryResult.queryText;
+  const intentName = req.body.queryResult.intent.displayName;
   const parameters = req.body.queryResult?.parameters || {};
   const marca = parameters['marca_auto'];
   const modelo = parameters['modelo_auto'];
   const year = parameters['year'];
 
   try {
+    if (intentName === 'duda_general_auto') {
+      // Enviar la pregunta a GPT
+      const completion = await openai.createChatCompletion({
+        model: 'gpt-4',
+        messages: [
+          {
+            role: 'system',
+            content: 'Eres un experto en autos. Responde de forma clara y concisa preguntas técnicas o generales sobre automóviles.'
+          },
+          { role: 'user', content: queryText }
+        ],
+        temperature: 0.7,
+        max_tokens: 200
+      });
+
+      const gptResponse = completion.data.choices[0].message.content;
+
+      return res.json({ fulfillmentText: gptResponse });
+    }
+
     const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${marca}&model=${modelo}&year=${year}&callback=?`;
     const rawResponse = await axios.get(url);
     
@@ -39,6 +71,7 @@ module.exports = async (req, res) => {
     const puertas = auto.model_doors || 'desconocido';
     const traccion = (auto.model_drive || 'desconocida')
       .replace('Front Wheel Driv', 'delantera')
+      .replace('Front', 'delantera')
       .replace('Rear Wheel Driv', 'trasera')
       .replace('All Wheel Drive', 'integral')
       .replace('Four Wheel Drive', '4x4');
