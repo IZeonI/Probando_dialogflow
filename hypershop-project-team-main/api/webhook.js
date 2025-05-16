@@ -1,12 +1,9 @@
 require('dotenv').config();
 
-const { Configuration, OpenAIApi } = require("openai");
-
-const configuration = new Configuration({
+const OpenAI = require('openai');
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 const axios = require('axios');
 
@@ -24,50 +21,46 @@ module.exports = async (req, res) => {
 
   try {
     if (intentName === 'duda_general_auto') {
-      // Enviar la pregunta a GPT
-      const completion = await openai.createChatCompletion({
+      const completion = await openai.chat.completions.create({
         model: 'gpt-4',
         messages: [
           {
             role: 'system',
-            content: 'Eres un experto en autos. Responde de forma clara y concisa preguntas técnicas o generales sobre automóviles.'
+            content: 'Eres un experto en autos. Responde de forma clara y concisa preguntas técnicas o generales sobre automóviles.',
           },
-          { role: 'user', content: queryText }
+          { role: 'user', content: queryText },
         ],
         temperature: 0.7,
-        max_tokens: 200
+        max_tokens: 200,
       });
 
-      const gptResponse = completion.data.choices[0].message.content;
+      const gptResponse = completion.choices[0].message.content;
 
       return res.json({ fulfillmentText: gptResponse });
     }
 
+    // Código para consultar CarQueryAPI
     const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${marca}&model=${modelo}&year=${year}&callback=?`;
     const rawResponse = await axios.get(url);
-    
-    // CarQuery responde con JSONP, así que hay que limpiarlo
+
     const jsonStart = rawResponse.data.indexOf('{');
     const jsonEnd = rawResponse.data.lastIndexOf('}');
     const jsonString = rawResponse.data.substring(jsonStart, jsonEnd + 1);
     const data = JSON.parse(jsonString);
 
-    console.log("Respuesta de CarQuery:", data);
+    console.log('Respuesta de CarQuery:', data);
 
     const trims = data.Trims;
     if (!trims || trims.length === 0) {
       return res.json({
-        fulfillmentText: `No encontré información del ${marca} ${modelo} ${year}.`
+        fulfillmentText: `No encontré información del ${marca} ${modelo} ${year}.`,
       });
     }
-
-    console.log("Primer trim:", trims[0]);
 
     const auto = trims[0];
 
     const motor = `${auto.model_engine_cyl || '?'} cilindros ${auto.model_engine_type || ''} de ${auto.model_engine_cc || '?'} cc`;
-    const combustible = (auto.model_engine_fuel || 'desconocido')
-      .replace('Unleaded', 'sin plomo');
+    const combustible = (auto.model_engine_fuel || 'desconocido').replace('Unleaded', 'sin plomo');
     const puertas = auto.model_doors || 'desconocido';
     const traccion = (auto.model_drive || 'desconocida')
       .replace('Front Wheel Driv', 'delantera')
@@ -79,18 +72,13 @@ module.exports = async (req, res) => {
       .replace('Automatic', 'automática')
       .replace('Manual', 'manual');
 
-
-
     const respuesta = `El ${marca} ${modelo} ${year} tiene un motor de ${motor}, usa combustible ${combustible}, tiene ${puertas} puertas, transmisión ${transmision} y tracción ${traccion}.`;
 
-
     return res.json({ fulfillmentText: respuesta });
-
-
   } catch (error) {
-    console.error("Error al consultar CarQuery:", error.message);
+    console.error('Error al consultar CarQuery:', error.message);
     return res.json({
-      fulfillmentText: 'Hubo un problema al consultar los datos del auto.'
+      fulfillmentText: 'Hubo un problema al consultar los datos del auto.',
     });
   }
 };
