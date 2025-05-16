@@ -20,12 +20,16 @@ module.exports = async (req, res) => {
     const jsonString = rawResponse.data.substring(jsonStart, jsonEnd + 1);
     const data = JSON.parse(jsonString);
 
+    console.log("Respuesta de CarQuery:", data);
+
     const trims = data.Trims;
     if (!trims || trims.length === 0) {
       return res.json({
         fulfillmentText: `No encontré información del ${marca} ${modelo} ${year}.`
       });
     }
+
+    console.log("Primer trim:", trims[0]);
 
     const auto = trims[0];
     const motor = auto.engine || "desconocido";
