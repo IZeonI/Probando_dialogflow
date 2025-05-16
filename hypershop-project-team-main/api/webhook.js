@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
   const parameters = req.body.queryResult?.parameters || {};
   const marca = parameters['marca_auto'];
   const modelo = parameters['modelo_auto'];
-  const year = parameters['date'] || parameters['number'];
+  const year = parameters['year'];
 
   try {
     const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${marca}&model=${modelo}&year=${year}&callback=?`;
