@@ -1,12 +1,12 @@
 require('dotenv').config();
 
-const { OpenAIApi, Configuration } = require("openai");
+const { Configuration, OpenAIApi } = require("openai");
 
-const openai = new OpenAIApi(
-  new Configuration({
-    apiKey:process.env.OPENAI_API_KEY,
-  })
-);
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 
 const axios = require('axios');
 
