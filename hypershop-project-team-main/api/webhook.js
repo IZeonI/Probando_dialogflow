@@ -34,7 +34,8 @@ module.exports = async (req, res) => {
     const auto = trims[0];
 
     const motor = `${auto.model_engine_cyl || '?'} cilindros ${auto.model_engine_type || ''} de ${auto.model_engine_cc || '?'} cc`;
-    const combustible = auto.model_engine_fuel || 'desconocido';
+    const combustible = (auto.model_engine_fuel || 'desconocido')
+      .replace('Unleaded', 'sin plomo');
     const puertas = auto.model_doors || 'desconocido';
     const traccion = (auto.model_drive || 'desconocida')
       .replace('Front Wheel Driv', 'delantera')
