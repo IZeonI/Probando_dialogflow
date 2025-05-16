@@ -32,12 +32,15 @@ module.exports = async (req, res) => {
     console.log("Primer trim:", trims[0]);
 
     const auto = trims[0];
-    const motor = auto.engine || "desconocido";
-    const combustible = auto.fuel_type || "desconocido";
-    const puertas = auto.doors || "desconocido";
 
-    const respuesta = `El ${marca} ${modelo} ${year} tiene un motor ${motor}, usa ${combustible} y tiene ${puertas} puertas.`;
+    const motor = `${auto.model_engine_cyl || '?'} cilindros ${auto.model_engine_type || ''} de ${auto.model_engine_cc || '?'} cc`;
+    const combustible = auto.model_engine_fuel || 'desconocido';
+    const puertas = auto.model_doors || 'desconocido';
+
+    const respuesta = `El ${marca} ${modelo} ${year} tiene un motor de ${motor}, usa combustible ${combustible} y tiene ${puertas} puertas.`;
+
     return res.json({ fulfillmentText: respuesta });
+
 
   } catch (error) {
     console.error("Error al consultar CarQuery:", error.message);
