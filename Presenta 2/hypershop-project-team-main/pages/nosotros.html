@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hypershop</title>
+
+    <!-- styles -->
+    <link href="../css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/homepage.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/nosotros.css" />
+
+    <!-- fonts -->
+    <!-- Emblema One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Emblema+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="header-left">
+        <button id="btn-menu">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+          >
+            <path d="M4 6l16 0"></path>
+            <path d="M4 12l16 0"></path>
+            <path d="M4 18l16 0"></path>
+          </svg>
+        </button>
+
+        <img src="../assets/logo/logo_no_bg.png" alt="logo" id="logo"/>
+      </div>
+
+      <div class="header-center">
+        <div class="hc-input">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+          >
+            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+            <path d="M21 21l-6 -6"></path>
+          </svg>
+          <input name="" value="" placeholder="Buscar..." />
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button id="shopping-cart">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+          >
+            <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+            <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+            <path d="M17 17h-11v-14h-2"></path>
+            <path d="M6 5l14 1l-1 7h-13"></path>
+          </svg>
+        </button>
+
+        <button id="user">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+          >
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+            <path
+              d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!--------------------------- Menu --------------------------->
+
+    <div class="menu-container" id="menu">
+      <nav class="menu">
+        <a href="">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+          >
+            <path
+              d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
+            ></path>
+            <path d="M6 5v-2"></path>
+            <path d="M18 3v2"></path>
+            <path d="M6.5 12h3"></path>
+            <path d="M14.5 12h3"></path>
+            <path d="M16 10.5v3"></path>
+          </svg>
+          Productos
+        </a>
+        <!-- <h4>Categorías</h4> -->
+        <ul>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Motores</a>
+          </li>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Aceites</a>
+          </li>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Frenos</a>
+          </li>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Focos</a>
+          </li>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Llantas</a>
+          </li>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Pinturas</a>
+          </li>
+          <li>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4"></path>
+            </svg>
+            <a href="">Baterías</a>
+          </li>
+        </ul>
+        <hr />
+        <a href="nosotros.html">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+          >
+            <path d="M8 16l2 -6l6 -2l-2 6l-6 2"></path>
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+            <path d="M12 3l0 2"></path>
+            <path d="M12 19l0 2"></path>
+            <path d="M3 12l2 0"></path>
+            <path d="M19 12l2 0"></path>
+          </svg>
+          Nosotros
+        </a>
+      </nav>
+    </div>
+    <img
+      src="../assets/homepage/hyypersore.png"
+      alt="Imagen de nosotros"
+      class="imagen-nosotros"
+    />
+    <section class="info-section">
+      <div class="info-image">
+        <img src="../assets/homepage/n1.png" alt="Nosotros" />
+      </div>
+      <div class="info-text">
+        <h2>¿Quiénes somos?</h2>
+        <p>
+          En <strong>Hypershop</strong> nos dedicamos a brindar refacciones
+          automotrices de calidad para todos los tipos de vehículos. Nuestra
+          misión es garantizar que tu automóvil siempre esté en las mejores
+          condiciones posibles.
+        </p>
+      </div>
+    </section>
+
+    <section class="info-section reverse">
+      <div class="info-image">
+        <img src="../assets/homepage/mision2.webp" alt="Misión" />
+      </div>
+      <div class="info-text">
+        <h2>Misión</h2>
+        <p>
+          Nuestra misión es proporcionar a nuestros clientes productos de
+          calidad que aseguren el rendimiento óptimo de sus vehículos, con
+          precios accesibles y un excelente servicio al cliente.
+        </p>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <div class="info-image">
+        <img src="../assets/homepage/vision.jpg" alt="Visión" />
+      </div>
+      <div class="info-text">
+        <h2>Visión</h2>
+        <p>
+          Ser la tienda número uno en refacciones automotrices en México,
+          reconocida por nuestra atención al cliente, variedad de productos y
+          compromiso con la excelencia.
+        </p>
+      </div>
+    </section>
+
+    <section class="info-section reverse">
+      <div class="info-image">
+        <img src="../assets/homepage/valores.avif" alt="Valores" />
+      </div>
+      <div class="info-text">
+        <h2>Valores</h2>
+        <p>
+          En Hypershop nos guiamos por la honestidad, responsabilidad y pasión
+          por lo que hacemos. Nos esforzamos día a día para ofrecer un servicio
+          confiable y eficiente a cada uno de nuestros clientes.
+        </p>
+      </div>
+    </section>
+    <section class="info-section">
+      <div class="info-text">
+        <h2>¿Necesitas ayuda?</h2>
+        <p>
+          Si necesitas ayuda con la instalación de tus refacciones o deseas
+          realizar una revisión preventiva de tu vehículo, no dudes en
+          visitarnos en nuestra tienda física. ¡Con gusto te atenderemos!
+        </p>
+      </div>
+      <div class="info-image">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120203.84188246552!2d-101.27712602459692!3d19.696863023964166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842d0e40be8f4d3b%3A0xf001c256ae856856!2sInstituto%20Tecnol%C3%B3gico%20de%20Morelia!5e0!3m2!1ses!2smx!4v1744008827818!5m2!1ses!2smx"
+          width="100%"
+          height="300"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        >
+        </iframe>
+      </div>
+    </section>
+
+    <footer>
+      <h3>@2025 Osvaldo, Saúl y Alberto. Todos los derechos reservados.</h3>
+    </footer>
+    <script src="../js/menu.js"></script>
+    <script>
+      document
+        .querySelector(".button-nosotros")
+        .addEventListener("click", () => {
+          window.location.href = "nosotros.html";
+        });
+    </script>
+  </body>
+</html>

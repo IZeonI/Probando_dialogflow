@@ -1,0 +1,139 @@
+/*banner*/
+.banner {
+  height: 60vh;
+  width: 100%;
+  background-image: url(../assets/homepage/banner.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.banner-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  color: white;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.2)
+  );
+}
+
+.banner-filter h1 {
+  font-size: 3rem;
+  font-family: "Emblema One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.banner-filter h2 {
+  font-size: 1.5rem;
+  color: var(main-accent);
+}
+
+.banner-buttons button {
+  border: none;
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.button-producto {
+  color: white;
+  background-color: var(--main-accent);
+}
+
+.button-producto:hover {
+  opacity: 0.9;
+}
+
+.button-nosotros {
+  background-color: #ffffff;
+}
+
+/*carrucel*/
+
+.title {
+  padding: 25px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-categorias {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.home-categorias button {
+  border-radius: 100%;
+  height: 60px;
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--main-accent);
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.home-categorias button:hover {
+  opacity: 0.9;
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.carrusel-contenedor {
+  width: 80%;
+  overflow: hidden;
+  position: relative;
+}
+
+.carrusel-categorias {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  justify-content: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.categoria {
+  height: 250px;
+  width: 150px;
+  font-size: 20px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: solid 1px black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: var(--mint);
+  cursor: pointer;
+}
+
+.categoria:hover {
+  color: white;
+  transform: scale(0.9);
+  transition: transform 0.3s ease-in-out;
+  background-color: var(--main-accent);
+}
+
+.categoria img {
+  width: 130px;
+  height: 150px;
+}

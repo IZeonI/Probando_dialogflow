@@ -1,0 +1,25 @@
+:root {
+  --main-accent: #007bff;
+  --mint: #eef4ed;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  /* border: 1px red solid; */
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body.noscroll {
+  overflow: hidden;
+}
+
+button {
+  font-weight: 600;
+}

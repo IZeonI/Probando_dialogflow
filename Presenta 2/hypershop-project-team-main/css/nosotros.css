@@ -1,0 +1,102 @@
+/* Contenedor principal */
+.quienes-somos {
+  text-align: center;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Imagen responsiva */
+.imagen-nosotros {
+  margin-top: 5rem;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* sombra opcional */
+}
+
+/* Texto */
+.quienes-somos h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.quienes-somos p {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 600px) {
+  .quienes-somos h1 {
+    font-size: 1.5rem;
+  }
+
+  .quienes-somos p {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+}
+.info-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: auto;
+  flex-wrap: wrap;
+}
+
+.info-image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.info-text {
+  max-width: 500px;
+  text-align: left;
+}
+
+.info-text h2 {
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.info-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.reverse {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  .info-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .reverse {
+    flex-direction: column;
+  }
+
+  .info-text {
+    text-align: center;
+  }
+}
+.info-image iframe {
+  width: 400px;
+  height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
