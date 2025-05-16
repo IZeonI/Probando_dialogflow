@@ -36,8 +36,19 @@ module.exports = async (req, res) => {
     const motor = `${auto.model_engine_cyl || '?'} cilindros ${auto.model_engine_type || ''} de ${auto.model_engine_cc || '?'} cc`;
     const combustible = auto.model_engine_fuel || 'desconocido';
     const puertas = auto.model_doors || 'desconocido';
+    const traccion = (auto.model_drive || 'desconocida')
+      .replace('Front Wheel Driv', 'delantera')
+      .replace('Rear Wheel Driv', 'trasera')
+      .replace('All Wheel Drive', 'integral')
+      .replace('Four Wheel Drive', '4x4');
+    const transmision = (auto.model_transmission_type || 'desconocida')
+      .replace('Automatic', 'automática')
+      .replace('Manual', 'manual');
 
-    const respuesta = `El ${marca} ${modelo} ${year} tiene un motor de ${motor}, usa combustible ${combustible} y tiene ${puertas} puertas.`;
+
+
+    const respuesta = `El ${marca} ${modelo} ${year} tiene un motor de ${motor}, usa combustible ${combustible}, tiene ${puertas} puertas, transmisión ${transmision} y tracción ${traccion}.`;
+
 
     return res.json({ fulfillmentText: respuesta });
 
