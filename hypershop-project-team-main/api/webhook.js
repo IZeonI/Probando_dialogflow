@@ -1,10 +1,8 @@
 require('dotenv').config();
-const OpenAI = require('openai');
+const { OpenAI } = require("openai");
 const axios = require('axios');
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -19,29 +17,14 @@ module.exports = async (req, res) => {
   const year = parameters['year'];
 
   try {
-    if (intentName === 'Default Fallback Intent') {
+    // Maneja cualquier pregunta general con GPT
+    if (intentName === 'duda_general_auto' || intentName === 'Default Fallback Intent') {
       const completion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: 'Eres un asistente útil y amigable.' },
-          { role: 'user', content: queryText }
-        ],
-        temperature: 0.7,
-        max_tokens: 200
-      });
-
-      const gptResponse = completion.choices[0].message.content;
-      return res.json({ fulfillmentText: gptResponse });
-    }
-
-    if (intentName === 'duda_general_auto') {
-      // Enviar la pregunta a GPT
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-3.5-turbo', // o 'gpt-4' si tienes acceso
         messages: [
           {
             role: 'system',
-            content: 'Eres un experto en autos. Responde de forma clara y concisa preguntas técnicas o generales sobre automóviles.'
+            content: 'Eres un experto amigable que responde preguntas de forma clara y útil.'
           },
           { role: 'user', content: queryText }
         ],
@@ -54,10 +37,10 @@ module.exports = async (req, res) => {
       return res.json({ fulfillmentText: gptResponse });
     }
 
+    // Si no es pregunta general, consulta CarQuery
     const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${marca}&model=${modelo}&year=${year}&callback=?`;
     const rawResponse = await axios.get(url);
-    
-    // CarQuery responde con JSONP, así que hay que limpiarlo
+
     const jsonStart = rawResponse.data.indexOf('{');
     const jsonEnd = rawResponse.data.lastIndexOf('}');
     const jsonString = rawResponse.data.substring(jsonStart, jsonEnd + 1);
@@ -71,10 +54,8 @@ module.exports = async (req, res) => {
     }
 
     const auto = trims[0];
-
     const motor = `${auto.model_engine_cyl || '?'} cilindros ${auto.model_engine_type || ''} de ${auto.model_engine_cc || '?'} cc`;
-    const combustible = (auto.model_engine_fuel || 'desconocido')
-      .replace('Unleaded', 'sin plomo');
+    const combustible = (auto.model_engine_fuel || 'desconocido').replace('Unleaded', 'sin plomo');
     const puertas = auto.model_doors || 'desconocido';
     const traccion = (auto.model_drive || 'desconocida')
       .replace('Front Wheel Driv', 'delantera')
@@ -91,9 +72,9 @@ module.exports = async (req, res) => {
     return res.json({ fulfillmentText: respuesta });
 
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error("Error al consultar CarQuery o GPT:", error.message);
     return res.json({
-      fulfillmentText: 'Hubo un problema al consultar los datos del auto.'
+      fulfillmentText: 'Hubo un problema al procesar tu solicitud. Inténtalo más tarde.'
     });
   }
 };
