@@ -18,24 +18,25 @@ module.exports = async (req, res) => {
 
   try {
     // Maneja cualquier pregunta general con GPT
-    if (intentName === 'duda_general_auto' || intentName === 'Default Fallback Intent') {
+    if (intentName === 'duda_general_auto') {
       const completion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo', // o 'gpt-4' si tienes acceso
+        model: 'gpt-3.5-turbo',
         messages: [
           {
             role: 'system',
-            content: 'Eres un experto amigable que responde preguntas de forma clara y útil.'
+            content: 'Eres un experto en autos que responde de forma clara, breve y fácil de entender. Evita usar lenguaje técnico complicado y sé directo al explicar conceptos.'
           },
           { role: 'user', content: queryText }
         ],
         temperature: 0.7,
-        max_tokens: 200
+        max_tokens: 500 // Puedes ajustar si notas que aún corta respuestas
       });
 
-      const gptResponse = completion.choices[0].message.content;
+      const gptResponse = completion.choices[0].message.content.trim();
 
       return res.json({ fulfillmentText: gptResponse });
     }
+
 
     // Si no es pregunta general, consulta CarQuery
     const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${marca}&model=${modelo}&year=${year}&callback=?`;
