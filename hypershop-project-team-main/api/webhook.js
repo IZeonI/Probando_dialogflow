@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
           { role: 'user', content: queryText }
         ],
         temperature: 0.7,
-        max_tokens: 500 // Puedes ajustar si notas que aún corta respuestas
+        max_tokens: 500 // Ajuste para limitar la longitud de la respuesta
       });
 
       const gptResponse = completion.choices[0].message.content.trim();
