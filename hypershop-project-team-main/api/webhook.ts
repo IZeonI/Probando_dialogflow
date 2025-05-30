@@ -1,81 +1,108 @@
 require('dotenv').config();
 const { OpenAI } = require("openai");
 const axios = require('axios');
-
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-module.exports = async (req, res) => {
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+const supabase: SupabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!);
+
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const queryText = req.body.queryResult.queryText;
-  const intentName = req.body.queryResult.intent.displayName;
-  const parameters = req.body.queryResult?.parameters || {};
-  const marca = parameters['marca_auto'];
-  const modelo = parameters['modelo_auto'];
-  const year = parameters['year'];
+  const queryText = req.body.queryResult.queryText as string;
+  const intentName = req.body.queryResult.intent.displayName as string;
+  const parameters = req.body.queryResult.parameters || {};
 
   try {
-    // Maneja cualquier pregunta general con GPT
-    if (intentName === 'duda_general_auto' || intentName === 'Default Fallback Intent') {
+    if (intentName === 'recomendar_producto') {
+      const categoriaNombre = parameters['categoria_producto']?.[0] as string | undefined;
+
+      if (!categoriaNombre) {
+        return res.json({ fulfillmentText: 'Por favor, dime qué categoría de producto te interesa.' });
+      }
+
+      const { data: categoriaPadre, error: catError } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('name', categoriaNombre)
+        .maybeSingle();
+
+      if (catError || !categoriaPadre) {
+        return res.json({ fulfillmentText: `No encontré la categoría "${categoriaNombre}".` });
+      }
+
+      const { data: categoriasHijas, error: errHijas } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('parent_id', categoriaPadre.id);
+
+      if (errHijas) {
+        return res.json({ fulfillmentText: 'Error buscando categorías hijas.' });
+      }
+
+      const idsHijas = categoriasHijas?.map(cat => cat.id) || [];
+
+      if (idsHijas.length === 0) {
+        return res.json({ fulfillmentText: `No hay categorías hijas para "${categoriaNombre}".` });
+      }
+
+      const { data: productos, error } = await supabase
+        .from('products')
+        .select('name, description')
+        .in('category_id', idsHijas);
+
+      if (error) {
+        console.error('Error al buscar productos:', error);
+        return res.json({ fulfillmentText: 'Ocurrió un error al obtener productos.' });
+      }
+
+      if (!productos || productos.length === 0) {
+        return res.json({ fulfillmentText: `No encontré productos en la categoría "${categoriaNombre}".` });
+      }
+
+      if (!productos || productos.length === 0) {
+        return res.json({ fulfillmentText: `No encontré productos en la categoría "${categoriaNombre}".` });
+      }
+
+      let respuesta = `Aquí tienes algunos productos para la categoría "${categoriaNombre}":\n`;
+      productos.forEach(p => {
+        const nombre = p.name || 'Producto sin nombre';
+        const descripcion = p.description || 'Sin descripción';
+        const link = `https://hypershop-astro-app-ly73.vercel.app/product/${encodeURIComponent(nombre)}`;
+        respuesta += `- ${nombre}: ${descripcion} [Ver producto](${link})\n`;
+      });
+
+      return res.json({ fulfillmentText: respuesta });
+    }
+
+    else if (intentName === 'duda_general_auto' || intentName === 'Default Fallback Intent') {
       const completion = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: [
-          {
-            role: 'system',
-            content: 'Eres un experto en autos que responde de forma clara, breve y fácil de entender. Evita usar lenguaje técnico complicado y sé directo al explicar conceptos.'
-          },
+          { role: 'system', content: 'Eres un experto en autos que responde de forma clara, breve y fácil de entender.' },
           { role: 'user', content: queryText }
         ],
         temperature: 0.7,
-        max_tokens: 500 // Ajuste para limitar la longitud de la respuesta
+        max_tokens: 500
       });
 
       const gptResponse = completion.choices[0].message.content.trim();
-
       return res.json({ fulfillmentText: gptResponse });
     }
 
-
-    // Si no es pregunta general, consulta CarQuery
-    const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${marca}&model=${modelo}&year=${year}&callback=?`;
-    const rawResponse = await axios.get(url);
-
-    const jsonStart = rawResponse.data.indexOf('{');
-    const jsonEnd = rawResponse.data.lastIndexOf('}');
-    const jsonString = rawResponse.data.substring(jsonStart, jsonEnd + 1);
-    const data = JSON.parse(jsonString);
-
-    const trims = data.Trims;
-    if (!trims || trims.length === 0) {
-      return res.json({
-        fulfillmentText: `No encontré información del ${marca} ${modelo} ${year}.`
-      });
+    else {
+      return res.json({ fulfillmentText: 'No entendí tu solicitud. ¿Podrías reformularla?' });
     }
-
-    const auto = trims[0];
-    const motor = `${auto.model_engine_cyl || '?'} cilindros ${auto.model_engine_type || ''} de ${auto.model_engine_cc || '?'} cc`;
-    const combustible = (auto.model_engine_fuel || 'desconocido').replace('Unleaded', 'sin plomo');
-    const puertas = auto.model_doors || 'desconocido';
-    const traccion = (auto.model_drive || 'desconocida')
-      .replace('Front Wheel Driv', 'delantera')
-      .replace('Front', 'delantera')
-      .replace('Rear Wheel Driv', 'trasera')
-      .replace('All Wheel Drive', 'integral')
-      .replace('Four Wheel Drive', '4x4');
-    const transmision = (auto.model_transmission_type || 'desconocida')
-      .replace('Automatic', 'automática')
-      .replace('Manual', 'manual');
-
-    const respuesta = `El ${marca} ${modelo} ${year} tiene un motor de ${motor}, usa combustible ${combustible}, tiene ${puertas} puertas, transmisión ${transmision} y tracción ${traccion}.`;
-
-    return res.json({ fulfillmentText: respuesta });
-
-  } catch (error) {
-    console.error("Error al consultar CarQuery o GPT:", error.message);
+  } catch (error: any) {
+    console.error("Error general:", error.message || error);
     return res.json({
       fulfillmentText: 'Hubo un problema al procesar tu solicitud. Inténtalo más tarde.'
     });
   }
-};
+}
+
+
