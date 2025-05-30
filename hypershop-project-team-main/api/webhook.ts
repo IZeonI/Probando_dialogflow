@@ -25,20 +25,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.json({ fulfillmentText: 'Por favor, dime qué categoría de producto te interesa.' });
       }
 
+      console.time("total");
+
+      console.time("Buscar categoría padre");
       const { data: categoriaPadre, error: catError } = await supabase
         .from('categories')
         .select('id')
         .eq('name', categoriaNombre)
         .maybeSingle();
+      console.timeEnd("Buscar categoría padre");
 
       if (catError || !categoriaPadre) {
         return res.json({ fulfillmentText: `No encontré la categoría "${categoriaNombre}".` });
       }
 
+      console.time("Buscar hijas");
       const { data: categoriasHijas, error: errHijas } = await supabase
         .from('categories')
         .select('id')
-        .eq('parent_id', categoriaPadre.id);
+        .eq('parent_id', categoriaPadre?.id);
+      console.timeEnd("Buscar hijas");
 
       if (errHijas) {
         return res.json({ fulfillmentText: 'Error buscando categorías hijas.' });
@@ -50,11 +56,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.json({ fulfillmentText: `No hay categorías hijas para "${categoriaNombre}".` });
       }
 
+      console.time("Buscar productos");
       const { data: productos, error } = await supabase
         .from('products')
         .select('name, description')
-        .in('category_id', idsHijas)
+        .in('category_id', categoriasHijas?.map(cat => cat.id) || [])
         .limit(5);
+      console.timeEnd("Buscar productos");
+
+      console.timeEnd("total");
 
       if (error) {
         console.error('Error al buscar productos:', error);
