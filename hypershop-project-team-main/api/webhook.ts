@@ -32,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .from('categories')
         .select('id')
         .eq('name', categoriaNombre)
-        .ilike('name', categoriaNombre);
+        .ilike('name', `%${categoriaNombre}%`)
         .maybeSingle();
       console.timeEnd("Buscar categoría padre");
 
