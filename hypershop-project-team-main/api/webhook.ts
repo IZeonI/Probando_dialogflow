@@ -30,8 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.time("Buscar categoría padre");
       const { data: categoriaPadre, error: catError } = await supabase
         .from('categories')
-        .select('id')
-        .eq('name', categoriaNombre)
+        .select('id, name')
         .ilike('name', `%${categoriaNombre}%`)
         .maybeSingle();
       console.timeEnd("Buscar categoría padre");
