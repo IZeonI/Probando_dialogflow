@@ -53,7 +53,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { data: productos, error } = await supabase
         .from('products')
         .select('name, description')
-        .in('category_id', idsHijas);
+        .in('category_id', idsHijas)
+        .limit(5);
 
       if (error) {
         console.error('Error al buscar productos:', error);
